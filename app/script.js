@@ -25,7 +25,6 @@ function App() {
   };
 
   const playBell = () => {
-    console.log('dzwiek lol');
     var bell = new Audio('./sounds/bell.wav');
     bell.play();
   }
