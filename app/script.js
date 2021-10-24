@@ -34,7 +34,6 @@ function App() {
     const minutes = String(Math.floor(time % 3600 / 60)).padStart(2, '0');
     const seconds = String(Math.floor(time % 3600 % 60)).padStart(2, '0');
     const timeInMinutes = `${minutes}:${seconds}`;
-    console.log('timeinminutes: ', timeInMinutes);
 
     if (time === 0 && status === 'work') {
       setStatus('rest');
