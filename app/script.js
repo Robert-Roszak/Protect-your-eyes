@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import { render } from 'react-dom';
 
 function App() {
@@ -25,28 +25,33 @@ function App() {
   };
 
   const playBell = () => {
-    var bell = new Audio('./sounds/bell.wav');
+    const bell = new Audio('./sounds/bell.wav');
     bell.play();
-  }
+  };
 
-  const handleTime = () => {
+  const formatTime = () => {
     const minutes = String(Math.floor(time % 3600 / 60)).padStart(2, '0');
     const seconds = String(Math.floor(time % 3600 % 60)).padStart(2, '0');
     const timeInMinutes = `${minutes}:${seconds}`;
+    handleTime(time);
+    return timeInMinutes;
+  };
 
+  const handleTime = (time) => {
     if (time === 0 && status === 'work') {
       setStatus('rest');
-      setTime(20*60);
+      setTime(20);
       playBell();
     }
     else if (time === 0 && status === 'rest') {
       setStatus('work');
-      setTime(20);
+      setTime(20*60);
       playBell();
     }
-    return timeInMinutes;
   };
   
+  const formattedTime = useMemo(() => formatTime(), [time]);
+
   return (
     <div>
       <h1>Protect your eyes</h1>
@@ -57,7 +62,7 @@ function App() {
       </div>}
       {(status === 'work') && <img src="./images/work.png" />}
       {(status === 'rest') && <img src="./images/rest.png" />}
-      {(status !== 'off') && <div className="timer">{handleTime()}</div>}
+      {(status !== 'off') && <div className="timer">{formattedTime}</div>}
       {(status === 'off') && <button onClick={() => startTimer()} className="btn">Start</button>}
       {(status !== 'off') && <button onClick={() => stopTimer()} className="btn">Stop</button>}
       <button onClick={() => closeApp()} className="btn btn-close">X</button>
