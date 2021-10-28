@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import { render } from 'react-dom';
 
 function App() {
@@ -9,10 +9,10 @@ function App() {
   const startTimer = () => {
     setTime(20*60);
     setTimer(setInterval(() => {
-      setTime(prevTime => prevTime - 1);
+      setTime(prevTime => prevTime - 1); 
     }, 1000));
     setStatus('work');
-  }
+  };
 
   const stopTimer = () => {
     setStatus('off');
@@ -33,11 +33,10 @@ function App() {
     const minutes = String(Math.floor(time % 3600 / 60)).padStart(2, '0');
     const seconds = String(Math.floor(time % 3600 % 60)).padStart(2, '0');
     const timeInMinutes = `${minutes}:${seconds}`;
-    handleTime(time);
     return timeInMinutes;
   };
 
-  const handleTime = (time) => {
+  const handleTime = () => {   
     if (time === 0 && status === 'work') {
       setStatus('rest');
       setTime(20);
@@ -50,6 +49,7 @@ function App() {
     }
   };
   
+  useEffect(handleTime, [time]);
   const formattedTime = useMemo(() => formatTime(), [time]);
 
   return (
